@@ -1,4 +1,4 @@
-Name: ...
+Name: Will Weatherford
 CodeFellows Python F2
 SEA-C45
 Homework 8
