@@ -60,35 +60,35 @@ for bp in seq:
     # increment the total number of bps we've seen
     total_count = total_count + 1
 
-    if bp == 'C':
-        c_count += 1
-    elif bp == 'G':
+    if bp == 'G':
+        g_count += 1
+    elif bp == 'C':
         c_count += 1
     elif bp == 'A':
         a_count += 1
     elif bp == 'T':
         t_count += 1
 
-gc_count = c_count + g_count
+gc_count = g_count + c_count
 at_count = a_count + t_count
-gcat_count = gc_count + at_count
+sum_count = gc_count + at_count
 
 # divide the gc_count by the total_count
-gc_content = float(gc_count) / gcat_count
-at_content = float(at_count) / gcat_count
-c_content = float(c_count) / gcat_count
-g_content = float(g_count) / gcat_count
-a_content = float(a_count) / gcat_count
-t_content = float(t_count) / gcat_count
+gc_content = float(gc_count) / sum_count
+at_content = float(at_count) / sum_count
+g_content = float(g_count) / sum_count
+c_content = float(c_count) / sum_count
+a_content = float(a_count) / sum_count
+t_content = float(t_count) / sum_count
 
 # Print the answer
-# print 'GC-content:', gc_content
-# print 'AT-content:', at_content
-# print 'C-content:', c_content
-# print 'G-content:', g_content
-# print 'A-content:', a_content
-# print 'T-content:', t_content
-# print '---------------------'
-print 'Sum of all contents: ', sum((c_count, g_count, a_count, t_count))
-print 'total_count variable:', total_count
-print 'Length of seq variable:', len(seq)
+print 'GC-content:', gc_content
+print 'AT-content:', at_content
+print 'G-content:', g_count
+print 'C count:', c_count
+print 'A-content:', a_count
+print 'T-content:', t_count
+print 'Sum count: ', sum_count
+print 'Total count:', total_count
+print 'seq length:', len(seq)
+print 'AT/GC Ratio:', float(a_count) / gc_count

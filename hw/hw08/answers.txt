@@ -77,7 +77,8 @@ instead of the length of "seq" or the value of "total_count".
 
 Problem 7:
 
-...
+AT/GC Ratio: 0.662881100467
+
 
 Problem 8:
 
