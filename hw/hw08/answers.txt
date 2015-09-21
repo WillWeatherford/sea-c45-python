@@ -27,6 +27,10 @@ those variables do not exist when called by name later in the program.
 Therefore the program raises a NameError because a non-defined variable
 is being called.
 
+If this line was commented out:
+gc_count = 0
+
+
 Problem 4:
 
 ...
