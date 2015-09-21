@@ -29,9 +29,9 @@ filename = sys.argv[1]
 inputfile = open(filename)
 
 # All the nucleotides in the input file that have been read so far.
-seq = ""
+# seq = ""
 # The current line number (= the number of lines read so far).
-linenum = 0
+# linenum = 0
 
 
 for line in inputfile:
@@ -68,4 +68,4 @@ for bp in seq:
 gc_content = float(gc_count) / total_count
 
 # Print the answer
-print('GC-content:', gc_content)
+print 'GC-content:', gc_content
