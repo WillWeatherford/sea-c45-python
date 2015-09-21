@@ -80,6 +80,12 @@ g_content = float(g_count) / sum_count
 c_content = float(c_count) / sum_count
 a_content = float(a_count) / sum_count
 t_content = float(t_count) / sum_count
+if gc_content > 0.6:
+    gc_cls = 'high GC content'
+elif gc_content < 0.4:
+    gc_cls = 'low GC content'
+else:
+    gc_cls = 'moderate GC content'
 
 # Print the answer
 print 'GC-content:', gc_content
@@ -92,3 +98,4 @@ print 'Sum count: ', sum_count
 print 'Total count:', total_count
 print 'seq length:', len(seq)
 print 'AT/GC Ratio:', float(a_count) / gc_count
+print 'GC Classification:', gc_cls

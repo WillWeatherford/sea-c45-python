@@ -82,12 +82,22 @@ AT/GC Ratio: 0.662881100467
 
 Problem 8:
 
-...
+GC Classification: moderate GC content
+
 
 Collaboration:
 
-...
+I didn't have anyone else's help, but I did look up on wikipedia what "N"
+represents in a string of DNA base pairs.
+
 
 Reflection:
 
-...
+I learned some about what geneticists look for and classify in DNA strings.
+
+I also learned more about using Git and got more comfortable adding and 
+committing.
+
+I would advise future students to check out the expected output files
+ahead of time to get an idea of what outcomes to aim for from the beginning,
+to do less re-writing of code.
