@@ -90,12 +90,12 @@ else:
 # Print the answer
 print 'GC-content:', gc_content
 print 'AT-content:', at_content
-print 'G-content:', g_count
+print 'G count:', g_count
 print 'C count:', c_count
-print 'A-content:', a_count
-print 'T-content:', t_count
-print 'Sum count: ', sum_count
+print 'A count:', a_count
+print 'T count:', t_count
+print 'Sum count:', sum_count
 print 'Total count:', total_count
 print 'seq length:', len(seq)
-print 'AT/GC Ratio:', float(a_count) / gc_count
+print 'AT/GC Ratio:', float(at_count) / gc_count
 print 'GC Classification:', gc_cls
