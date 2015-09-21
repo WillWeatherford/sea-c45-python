@@ -1,4 +1,4 @@
-def fibonacci(n, m=0, l=1):
+def fibonacci(n, seq1=0, seq2=1):
     '''
     Returns the nth number from the Fibonacci sequence.
 
@@ -6,12 +6,20 @@ def fibonacci(n, m=0, l=1):
              fibonacci(1) == 1
     '''
     if n <= 0:
-        return m
+        return seq1
     else:
-        return fibonacci(n - 1, l, m + l)
+        return fibonacci(n - 1, seq2, seq1 + seq2)
+
 
 def lucas(n):
-    return 0
+    '''
+    Returns the nth number from the Lucas numbers.
 
-def sum_series(n):
+    Example: lucas(0) == 2
+             lucas(1) == 1
+    '''
+    return fibonacci(n, 2, 1)
+
+
+def sum_series(n, m, l):
     return 0
