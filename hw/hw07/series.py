@@ -29,6 +29,7 @@ def sum_series(n, seq1=0, seq2=1):
         return sum_series(n - 1, seq2, seq1 + seq2)
 
 if __name__ == '__main__':
+    print 'Starting to check assert statements.'
     assert(fibonacci(0) == 0)
     assert(fibonacci(1) == 1)
     assert(fibonacci(2) == 1)
@@ -53,3 +54,4 @@ if __name__ == '__main__':
     assert(sum_series(5, 10, 20) == 130)
     assert(sum_series(6, 10, 20) == 210)
     assert(sum_series(7, 10, 20) == 340)
+    print 'Finished checking assert statements.'
