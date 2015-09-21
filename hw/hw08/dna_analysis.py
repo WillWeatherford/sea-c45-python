@@ -49,9 +49,7 @@ for line in inputfile:
 
 # Total nucleotides seen so far.
 total_count = 0
-# Number of G and C nucleotides seen so far.
-gc_count = 0
-at_count = 0
+# Number of nucleotides seen so far.
 g_count = 0
 c_count = 0
 a_count = 0
@@ -63,30 +61,34 @@ for bp in seq:
     total_count = total_count + 1
 
     if bp == 'C':
-        gc_count += 1
         c_count += 1
     elif bp == 'G':
-        gc_count += 1
-        g_count += 1
+        c_count += 1
     elif bp == 'A':
-        at_count += 1
         a_count += 1
     elif bp == 'T':
-        at_count += 1
         t_count += 1
 
+gc_count = c_count + g_count
+at_count = a_count + t_count
+gcat_count = gc_count + at_count
+
 # divide the gc_count by the total_count
-gc_content = float(gc_count) / total_count
-at_content = float(at_count) / total_count
-c_content = float(c_count) / total_count
-g_content = float(g_count) / total_count
-a_content = float(a_count) / total_count
-t_content = float(t_count) / total_count
+gc_content = float(gc_count) / gcat_count
+at_content = float(at_count) / gcat_count
+c_content = float(c_count) / gcat_count
+g_content = float(g_count) / gcat_count
+a_content = float(a_count) / gcat_count
+t_content = float(t_count) / gcat_count
 
 # Print the answer
-print 'GC-content:', gc_content
-print 'AT-content:', at_content
-print 'C-content:', c_content
-print 'G-content:', g_content
-print 'A-content:', a_content
-print 'T-content:', t_content
+# print 'GC-content:', gc_content
+# print 'AT-content:', at_content
+# print 'C-content:', c_content
+# print 'G-content:', g_content
+# print 'A-content:', a_content
+# print 'T-content:', t_content
+# print '---------------------'
+print 'Sum of all contents: ', sum((c_count, g_count, a_count, t_count))
+print 'total_count variable:', total_count
+print 'Length of seq variable:', len(seq)

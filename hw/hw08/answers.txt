@@ -50,7 +50,30 @@ T-content: 0.283761
 
 Problem 6:
 
-...
+The program counts base pairs in several steps.
+First it takes every 4th line and assumes that all characters on that line are
+base piars.
+It adds each 4th line into a very long string -- the "seq" variable.
+Then it analyses the base pairs based on the percentage of each letter among
+the total number of characters in "seq".
+
+The "total_count" variable is increased for each character in "seq"; therefore
+the length of seq == total_count in all files.
+
+However, among the CGAT characters are also "N" characters, which according
+to Wikipedia indicate an unspecified amiguous base pair which may be any of the
+4: C, G, A or T.
+
+So the sum total of C,G,A and T will be less than "seq" since "seq" also
+includes "N"s.
+
+I'm not sure whether it would be correct or useful for a geneticist to include
+the "N" characters as part of the total CGAT count, since they are ambigous.
+
+I will update the GC content calculation to use the sum total of C,G,A and T,
+instead of the length of "seq" or the value of "total_count".
+
+
 
 Problem 7:
 
