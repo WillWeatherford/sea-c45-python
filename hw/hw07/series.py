@@ -30,6 +30,7 @@ def sum_series(n, seq1=0, seq2=1):
 
 if __name__ == '__main__':
     print 'Starting to check assert statements.'
+    # checking accuracy of fibonacci function with various inputs
     assert(fibonacci(0) == 0)
     assert(fibonacci(1) == 1)
     assert(fibonacci(2) == 1)
@@ -38,6 +39,7 @@ if __name__ == '__main__':
     assert(fibonacci(5) == 5)
     assert(fibonacci(6) == 8)
     assert(fibonacci(7) == 13)
+    # checking accuracy of lucas function with various inputs
     assert(lucas(0) == 2)
     assert(lucas(1) == 1)
     assert(lucas(2) == 3)
@@ -46,6 +48,7 @@ if __name__ == '__main__':
     assert(lucas(5) == 11)
     assert(lucas(6) == 18)
     assert(lucas(7) == 29)
+    # checking accuracy of base sum_series function with various inputs
     assert(sum_series(0, 10, 20) == 10)
     assert(sum_series(1, 10, 20) == 20)
     assert(sum_series(2, 10, 20) == 30)
