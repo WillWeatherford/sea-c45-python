@@ -4,8 +4,7 @@ def exhibit_name_error():
 
 
 def exhibit_attribute_error():
-	a = 'a'
-	return a.attr
+	return 'a'.attr
 
 
 def exhibit_type_error():
