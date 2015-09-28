@@ -1,4 +1,9 @@
-data = {}
+data = {
+    'Bill Gates': [1.00,
+                   10.00,
+                   100.00],
+    'Elon Musk': [8.00]
+}
 
 
 MAIN_MENU_PROMPT = '''
@@ -37,6 +42,8 @@ Director, F.H.W.
 
 Press enter to continue.
 '''
+
+CELL_WIDTHS = [30, 10, 5, 10]
 
 
 def repl(prompt, validator=None):
@@ -86,7 +93,8 @@ def t_menu(user_input):
             amount = repl(AMOUNT_PROMPT, is_valid_amount)
             if amount:
                 add_to_data(name, amount)
-                letter = LETTER_TEMPLATE.format(name=name, amount=amount)
+                letter = LETTER_TEMPLATE.format(name=name,
+                                                amount=format_amount(amount))
                 return repl(letter)
         else:
             return 'Invalid Name.'
@@ -94,7 +102,10 @@ def t_menu(user_input):
 
 def list_donor_names():
     global data
-    return '\n'.join(data.keys())
+    names = '\n'.join(data.keys())
+    names += '\n\nPress enter to continue.'
+    return names
+
 
 def is_valid_name(name):
     names = name.split(' ')
@@ -108,13 +119,41 @@ def is_valid_name(name):
 
 def is_valid_amount(user_input):
     try:
-        return str(round(float(user_input), 2))
+        return round(float(user_input), 2)
     except ValueError:
         return 'Invalid Amount'
 
 
+def format_amount(amount):
+    return '$%.2f'%amount
+
+
 def r_menu(user_input):
-    pass
+    global data
+
+    donor_list = data.keys()
+    donor_list.sort()
+    row_list = []
+    row_list.append(['Name', 'Total', '#', 'Average'])
+
+    for d in donor_list:
+        donations = data[d]
+        total = sum(donations)
+        num = len(donations)
+        avg = num / total
+        row_list.append([d,
+                         format_amount(total),
+                         str(num),
+                         format_amount(avg)])
+    formatted_list = []
+    for r in row_list:
+        formatted_row = []
+        for i, c in enumerate(r):
+            spaces = ' ' * (CELL_WIDTHS[i] - len(c))
+            formatted_row.append('{}{}'.format(c, spaces))
+        formatted_list.append(' | '.join(formatted_row))
+
+    return '\n'.join(formatted_list)
 
 
 def add_to_data(name, amount):
