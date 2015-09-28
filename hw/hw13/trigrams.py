@@ -11,8 +11,6 @@ def main(filename):
     for l in lines:
         words.extend(l.split(' '))
 
-    print words
-
     trigrams = {}
     for i, w in enumerate(words):
         if i + 2 < len(words):
