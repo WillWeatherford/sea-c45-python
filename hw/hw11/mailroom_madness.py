@@ -1,3 +1,5 @@
+data = {}
+
 
 MAIN_MENU_PROMPT = '''
 Welcome to Mailroom Madness
@@ -37,7 +39,7 @@ Press enter to continue.
 '''
 
 
-def repl(data, prompt, validator=None):
+def repl(prompt, validator=None):
     """request input from the user with `prompt` and return the result
 
     optionally, validate the input with a function `validator` which must
@@ -50,7 +52,7 @@ def repl(data, prompt, validator=None):
             print 'Quitting...'
             return
         if validator:
-            result = validator(data, user_input)
+            result = validator(user_input)
             if result:
                 if 'Invalid' in str(result):
                     print result
@@ -61,34 +63,38 @@ def repl(data, prompt, validator=None):
             return
 
 
-def main_menu(data, user_input):
+def main_menu(user_input):
     '''
     main program loop;
     can redirect to sub-loops
     '''
     if user_input in ('t', 'T'):
-        repl(data, T_MENU_PROMPT, t_menu)
+        repl(T_MENU_PROMPT, t_menu)
     elif user_input in ('r', 'R'):
-        repl(data, '', r_menu)
+        repl('', r_menu)
     else:
         return 'Invalid command.'
 
 
-def t_menu(data, user_input):
+def t_menu(user_input):
     if user_input == 'list':
-        #################
-        return
+        l = list_donor_names()
+        return repl(l)
     else:
         name = user_input
         if is_valid_name(name):
-            amount = repl(data, AMOUNT_PROMPT, is_valid_amount)
+            amount = repl(AMOUNT_PROMPT, is_valid_amount)
             if amount:
-                data = add_to_data(data, name, amount)
+                add_to_data(name, amount)
                 letter = LETTER_TEMPLATE.format(name=name, amount=amount)
-                return repl(data, letter)
+                return repl(letter)
         else:
             return 'Invalid Name.'
 
+
+def list_donor_names():
+    global data
+    return '\n'.join(data.keys())
 
 def is_valid_name(name):
     names = name.split(' ')
@@ -100,27 +106,26 @@ def is_valid_name(name):
     return True
 
 
-def is_valid_amount(data, user_input):
+def is_valid_amount(user_input):
     try:
         return str(round(float(user_input), 2))
     except ValueError:
         return 'Invalid Amount'
 
 
-def r_menu(data, user_input):
+def r_menu(user_input):
     pass
 
 
-def add_to_data(data, name, amount):
+def add_to_data(name, amount):
+    global data
     if name not in data.keys():
         data[name] = []
     data[name].append(amount)
-    return data
 
 
 if __name__ == '__main__':
-    data = {}
-    repl(data, MAIN_MENU_PROMPT, main_menu)
+    repl(MAIN_MENU_PROMPT, main_menu)
 
 
 #######################
