@@ -29,7 +29,7 @@ Please enter a donation amount or 'quit':
 LETTER_TEMPLATE = '''
 Dear {name},
 
-Thank you so much for your kind donation of ${amount}. We here at the Foundation
+Thank you so much for your kind donation of {amount}. We here at the Foundation
 for Homeless Whales greatly appreciate it. Your money will go towards creating
 new oceans on the moon for whales to live in.
 
@@ -39,8 +39,8 @@ Jim Grant
 
 Director, F.H.W.
 
-Press enter to continue.
 '''
+ENTER_TO_CONTINUE = '\n\nPress enter to continue.'
 
 CELL_WIDTHS = [20, 8, 3, 8]
 
@@ -63,7 +63,6 @@ def repl(prompt, validator=None):
                 if 'Invalid' in str(result):
                     print result
                 else:
-                    print result
                     return result
         else:
             return
@@ -77,15 +76,15 @@ def main_menu(user_input):
     if user_input in ('t', 'T'):
         repl(T_MENU_PROMPT, t_menu)
     elif user_input in ('r', 'R'):
-        repl('', r_menu)
+        report()
     else:
         return 'Invalid command.'
 
 
 def t_menu(user_input):
     if user_input == 'list':
-        l = list_donor_names()
-        return repl(l)
+        print list_donor_names()
+        return repl(ENTER_TO_CONTINUE)
     else:
         name = user_input
         if is_valid_name(name):
@@ -94,16 +93,15 @@ def t_menu(user_input):
                 add_to_data(name, amount)
                 letter = LETTER_TEMPLATE.format(name=name,
                                                 amount=format_amount(amount))
-                return repl(letter)
+                print letter
+                return repl(ENTER_TO_CONTINUE)
         else:
             return 'Invalid Name.'
 
 
 def list_donor_names():
     global data
-    names = '\n'.join(data.keys())
-    names += '\n\nPress enter to continue.'
-    return names
+    return '\n'.join(data.keys())
 
 
 def is_valid_name(name):
@@ -127,7 +125,7 @@ def format_amount(amount):
     return '$%.2f'%amount
 
 
-def r_menu(user_input):
+def report():
     global data
 
     donor_list = data.keys()
@@ -142,11 +140,12 @@ def r_menu(user_input):
         row = [d, format_amount(total), str(num), format_amount(avg)]
         row_list.append(get_report_cells(row))
 
-    return '\n'.join(row_list)
+    print '\n'.join(row_list)
+    return repl(ENTER_TO_CONTINUE)
 
 
 def get_report_header():
-    header = []
+    header = ['\n']
     header.append(get_report_cells(['Name', 'Total', '#', 'Average']))
     header.append('-' * (sum(CELL_WIDTHS) + (3 * len(CELL_WIDTHS))))
     return header
