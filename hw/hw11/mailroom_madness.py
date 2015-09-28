@@ -1,8 +1,7 @@
 data = {
-    'Bill Gates': [1.00,
-                   10.00,
-                   100.00],
-    'Elon Musk': [8.00]
+    'Bill Gates': [1.00, 10.00, 100.00],
+    'Elon Musk': [8.00, 888.00, 8888.00],
+    'Paul Allen': [1200.00]
 }
 
 
@@ -43,7 +42,7 @@ Director, F.H.W.
 Press enter to continue.
 '''
 
-CELL_WIDTHS = [30, 10, 5, 10]
+CELL_WIDTHS = [20, 8, 3, 8]
 
 
 def repl(prompt, validator=None):
@@ -133,27 +132,32 @@ def r_menu(user_input):
 
     donor_list = data.keys()
     donor_list.sort()
-    row_list = []
-    row_list.append(['Name', 'Total', '#', 'Average'])
+    row_list = get_report_header()
 
     for d in donor_list:
         donations = data[d]
         total = sum(donations)
         num = len(donations)
-        avg = num / total
-        row_list.append([d,
-                         format_amount(total),
-                         str(num),
-                         format_amount(avg)])
-    formatted_list = []
-    for r in row_list:
-        formatted_row = []
-        for i, c in enumerate(r):
-            spaces = ' ' * (CELL_WIDTHS[i] - len(c))
-            formatted_row.append('{}{}'.format(c, spaces))
-        formatted_list.append(' | '.join(formatted_row))
+        avg = total / num
+        row = [d, format_amount(total), str(num), format_amount(avg)]
+        row_list.append(get_report_cells(row))
 
-    return '\n'.join(formatted_list)
+    return '\n'.join(row_list)
+
+
+def get_report_header():
+    header = []
+    header.append(get_report_cells(['Name', 'Total', '#', 'Average']))
+    header.append('-' * (sum(CELL_WIDTHS) + (3 * len(CELL_WIDTHS))))
+    return header
+
+
+def get_report_cells(row):
+    formatted_row = []
+    for i, c in enumerate(row):
+        spaces = ' ' * (CELL_WIDTHS[i] - len(c))
+        formatted_row.append('{}{}'.format(spaces, c))
+    return ' | '.join(formatted_row)
 
 
 def add_to_data(name, amount):
