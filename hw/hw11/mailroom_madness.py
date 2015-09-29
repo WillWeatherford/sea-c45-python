@@ -70,8 +70,9 @@ def repl(prompt, validator=None):
 
 def main_menu(user_input):
     '''
-    main program loop;
-    can redirect to sub-loops
+    Main menu validator;
+    Redirects to sub-menus.
+    Returns None with successful use, or an Invalid message.
     '''
     if user_input in ('t', 'T'):
         repl(T_MENU_PROMPT, t_menu)
@@ -82,6 +83,11 @@ def main_menu(user_input):
 
 
 def t_menu(user_input):
+    '''
+    Validator for "Send a Thank You Letter" menu
+    redirects through to name and amount validators.
+    Eventually returns a formatted letter or an invalid message.
+    '''
     if user_input == 'list':
         print list_donor_names()
         return repl(ENTER_TO_CONTINUE)
@@ -100,11 +106,18 @@ def t_menu(user_input):
 
 
 def list_donor_names():
+    '''
+    returns a list of all donor names in data, one per line.
+    '''
     global data
     return '\n'.join(data.keys())
 
 
 def is_valid_name(name):
+    '''
+    Checks for valid name: two capitalized words, all alphabetical
+    characters.
+    '''
     names = name.split(' ')
     if len(names) < 2:
         return False
@@ -115,6 +128,10 @@ def is_valid_name(name):
 
 
 def is_valid_amount(user_input):
+    '''
+    Validator for donation amount.
+    Returns the float of the given number, or an invalid message
+    '''
     try:
         return round(float(user_input), 2)
     except ValueError:
@@ -122,10 +139,17 @@ def is_valid_amount(user_input):
 
 
 def format_amount(amount):
+    '''
+    Returns a neatly formatted dollar amount string from a given int
+    or float.
+    '''
     return '$%.2f'%amount
 
 
 def report():
+    '''
+    Gathers the current data and formats it into neat rows, then prints.
+    '''
     global data
 
     donor_list = data.keys()
@@ -145,6 +169,9 @@ def report():
 
 
 def get_report_header():
+    '''
+    Returns neatly formatted column headers for the data report.
+    '''
     header = ['\n']
     header.append(get_report_cells(['Name', 'Total', '#', 'Average']))
     header.append('-' * (sum(CELL_WIDTHS) + (3 * len(CELL_WIDTHS))))
@@ -152,6 +179,11 @@ def get_report_header():
 
 
 def get_report_cells(row):
+    '''
+    Formats each row of donor data into neatly spaced cells, based on
+    the CELL_WIDTHS constant.
+    returns a single string formatted row
+    '''
     formatted_row = []
     for i, c in enumerate(row):
         spaces = ' ' * (CELL_WIDTHS[i] - len(c))
@@ -160,6 +192,9 @@ def get_report_cells(row):
 
 
 def add_to_data(name, amount):
+    '''
+    Adds a given name and amount to the global data. Returns None.
+    '''
     global data
     if name not in data.keys():
         data[name] = []
