@@ -1,6 +1,34 @@
 import sys
 import random
 
+trigrams = {}
+
+def repl(prompt, validator=None):
+    while True:
+        user_input = raw_input(prompt)
+        if user_input in ('q', 'Q', 'quit', 'Quit'):
+            print 'Quitting'
+            return
+        if validator:
+            result = validator(user_input)
+            if result:
+                if 'Invalid' in str(result):
+                    print result
+                else:
+                    return result
+        else:
+            return
+
+
+def main_menu(user_input):
+    try:
+        textfile = open(filename, 'r')
+    except:
+        return 'Invalid Filename'
+
+    lines = textfile.readlines()
+    textfile.close()
+
 
 def main(filename):
     textfile = open(filename, 'r')
@@ -40,14 +68,6 @@ def create_new_words(trigrams, num, new_words=[]):
         three = random.choice(trigrams[onetwo])
         new_words.append(three)
         return create_new_words(trigrams, num, new_words)
-
-            
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
