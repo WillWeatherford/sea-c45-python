@@ -1,12 +1,17 @@
+# see if you can use a dict to switch between the users selections ???
+# Try to use a dict and the .format() method to do the letters as one
+# template -- rather than building up a big string in parts.
+
+
 data = {
     'Bill Gates': [1.00, 10.00, 100.00],
     'Elon Musk': [8.00, 888.00, 8888.00],
     'Paul Allen': [1200.00]
 }
 
-
 MAIN_MENU_PROMPT = '''
 Welcome to Mailroom Madness
+at the Society Against the Use of Apostrophes to Pluralize
 
 Choose from the following:
 
@@ -16,6 +21,7 @@ R - Create a (R)eport
 
 quit - Quit the program
 '''
+
 T_MENU_PROMPT = '''
 Please enter a name, or choose from the following:
 
@@ -23,26 +29,30 @@ list - Print a list of previous donors
 
 quit - Return to main menu.
 '''
+
 AMOUNT_PROMPT = '''
 Please enter a donation amount or 'quit':
 '''
+
 LETTER_TEMPLATE = '''
 Dear {name},
 
-Thank you so much for your kind donation of {amount}. We here at the Foundation
-for Homeless Whales greatly appreciate it. Your money will go towards creating
-new oceans on the moon for whales to live in.
+Thank you so much for your kind donation of {amount}. We here at the Society
+Against the Use of Apostrophes to Pluralize greatly appreciate it. Your money
+will help fund our elite team of lawyers, private detectives, vigilantes and
+spies as they prosecute with extreme prejudice all those who seek to harm the
+English language with incorrecly used punctuation.
 
 Thanks again,
 
-Jim Grant
+Hugh Jass
 
-Director, F.H.W.
+Director, S.A.U.A.P
 
 '''
 ENTER_TO_CONTINUE = '\n\nPress enter to continue.'
 
-CELL_WIDTHS = [20, 8, 3, 8]
+CELL_WIDTHS = [20, 10, 1, 10]
 
 
 def repl(prompt, validator=None):
@@ -100,6 +110,7 @@ def t_menu(user_input):
                 letter = LETTER_TEMPLATE.format(name=name,
                                                 amount=format_amount(amount))
                 print letter
+                save_letter(letter, name, amount)
                 return repl(ENTER_TO_CONTINUE)
         else:
             return 'Invalid Name.'
@@ -184,10 +195,9 @@ def get_report_cells(row):
     the CELL_WIDTHS constant.
     returns a single string formatted row
     '''
-    formatted_row = []
-    for i, c in enumerate(row):
-        spaces = ' ' * (CELL_WIDTHS[i] - len(c))
-        formatted_row.append('{}{}'.format(spaces, c))
+    formatted_row = [
+        ('{:>' + str(CELL_WIDTHS[i]) + '}').format(c) for i, c in enumerate(row)
+    ]
     return ' | '.join(formatted_row)
 
 
@@ -200,6 +210,12 @@ def add_to_data(name, amount):
         data[name] = []
     data[name].append(amount)
 
+
+def save_letter(letter, name, amount):
+    file_name = '{}_{}'.format(name.replace(' ', '_'), amount.replace('.', '_'))
+    f = open(file_name, 'w')
+    f.write(letter)
+    f.close()
 
 if __name__ == '__main__':
     repl(MAIN_MENU_PROMPT, main_menu)
