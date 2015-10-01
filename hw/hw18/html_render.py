@@ -28,7 +28,7 @@ class Element(object):
         return self.render()
 
     def render(self, f):
-        html = u'{i}<{n}>{c}{ch}</>'.format(
+        html = u'\n{i}<{n}>{c}{ch}\n{i}</>'.format(
             i=' ' * self.indent,
             n=self.name,
             c=self.content,
@@ -36,7 +36,7 @@ class Element(object):
         f.write(html)
 
     def format_content(self, content):
-        return '\n{}{}\n'.format(' ' * self.children_indent, content)
+        return '\n{}{}'.format(' ' * self.children_indent, content)
 
     def append(self, child=None):
         if child:
