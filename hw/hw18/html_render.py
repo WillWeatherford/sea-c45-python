@@ -12,7 +12,7 @@ Python class example.
 # justify right {:>x}
 
 TAB_SIZE = 4
-
+NEWLINE = '\n'
 
 class Content(object):
     def __init__(self, text):
@@ -25,11 +25,14 @@ class Content(object):
 class Element(object):
     def __init__(self, content=None, **attrs):
         self.tag = ''
-        self.extra_tag = ''
-        self.content_newline = '\n'
-        self.children = []
-        self.append(content)
+        self.doctype = ''
+        self.open_tag = '<{t}{a}>'
+        self.close_tag = '</{t}>'
+        self.multi_line = True
         self.attrs = attrs
+        self.children = []
+        if content:
+            self.append(content)
 
     def __str__(self):
         return self.render()
@@ -37,16 +40,39 @@ class Element(object):
     def render(self, f):
         f.write(self.render_html())
 
-    def render_html(self, indent=0, newline='\n'):
-        child_indent = indent + TAB_SIZE
-        return u'{x}{n}{i}<{t}{a}>{c}{n}{i}</{t}>'.format(
-            x=self.extra_tag,
-            n=newline,
-            i=u' ' * indent,  # possible to use int in string format better?
-            a=self.format_attrs(),
-            t=self.tag,
-            c=u''.join([child.render_html(
-                child_indent) for child in self.children]))
+    # def render_html(self, indent=0, newline='\n'):
+    #     child_indent = indent + TAB_SIZE
+    #     return u'{x}{n}{i}<{t}{a}>{c}{n}{i}</{t}>'.format(
+    #         x=self.extra_tag,
+    #         n=newline,
+    #         i=u' ' * indent,  # possible to use int in string format better?
+    #         a=self.format_attrs(),
+    #         t=self.tag,
+    #         c=u''.join([child.render_html(
+    #             child_indent) for child in self.children]))
+
+    def render_html(self, indent=0, newline=NEWLINE):
+        return u'{d}{b_o}{o_t}{c}{b_c}{c_t}'.format(
+            d=self.doctype,
+            b_o=self.before_open_tag(indent, newline),
+            o_t=self.open_tag.format(t=self.tag, a=self.format_attrs()),
+            c=''.join([c.render_html(
+                self.child_indent(indent),
+                self.child_newline()) for c in self.children]),
+            b_c=self.before_close_tag(indent, newline),
+            c_t=self.close_tag.format(t=self.tag))
+
+    def before_open_tag(self, indent, newline):
+        return '{}{}'.format(newline, ' ' * indent)
+
+    def before_close_tag(self, indent, newline):
+        return '{}{}'.format(newline, ' ' * indent) * self.multi_line
+
+    def child_indent(self, indent):
+        return (indent + TAB_SIZE) * self.multi_line
+
+    def child_newline(self):
+        return NEWLINE * self.multi_line
 
     def format_attrs(self):
         return ''.join([' {}="{}"'.format(k, v) for k, v in self.attrs.items()])
@@ -68,7 +94,7 @@ class Html(Element):
     def __init__(self, *args, **kwargs):
         super(Html, self).__init__(*args, **kwargs)
         self.tag = 'html'
-        self.extra_tag = '<!DOCTYPE html>'
+        self.doctype = '<!DOCTYPE html>'
 
 
 class Body(Element):
@@ -108,16 +134,7 @@ class Li(Element):
 class OneLineTag(Element):
     def __init__(self, *args, **kwargs):
         super(OneLineTag, self).__init__(*args, **kwargs)
-        self.child_newline = ''
-
-    def render_html(self, indent=0, newline=u'\n'):
-        return u'{n}{i}<{t}{a}>{c}</{t}>'.format(
-            n=newline,
-            i=u' ' * indent,  # possible to use int in string format better?
-            t=self.tag,
-            a=self.format_attrs(),
-            c=u''.join(
-                [child.render_html(0, u'') for child in self.children]))
+        self.multi_line = False
 
 
 class Title(OneLineTag):
@@ -141,21 +158,21 @@ class A(OneLineTag):
 #########################
 # Non-closing tags
 
-class Hr(Element):
+class EmptyTag(Element):
+    def __init__(self, *args, **kwargs):
+        super(EmptyTag, self).__init__(*args, **kwargs)
+        self.open_tag = '<{t}{a} />'
+        self.close_tag = ''
+        self.multi_line = False
+
+
+class Hr(EmptyTag):
     def __init__(self, *args, **kwargs):
         super(Hr, self).__init__(*args, **kwargs)
         self.tag = 'hr'
 
-    def render_html(self, indent=0):
-        return u'\n{i}<{t}{a} />'.format(
-            i=u' ' * indent,  # possible to use int in string format better?
-            t=self.tag,
-            a=self.format_attrs(),
-            c=u''.join(
-                [child.render_html(0, '') for child in self.children]))
 
-
-class Meta(Hr):
+class Meta(EmptyTag):
     def __init__(self, *args, **kwargs):
         super(Meta, self).__init__(*args, **kwargs)
         self.tag = 'meta'
