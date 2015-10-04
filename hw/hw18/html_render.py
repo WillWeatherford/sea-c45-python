@@ -89,20 +89,6 @@ class P(Element):
         self.tag = 'p'
 
 
-class Hr(Element):
-    def __init__(self, *args, **kwargs):
-        super(Hr, self).__init__(*args, **kwargs)
-        self.tag = 'hr'
-
-    def render_html(self, indent=0):
-        return u'\n{i}<{t}{a} />'.format(
-            i=u' ' * indent,  # possible to use int in string format better?
-            t=self.tag,
-            a=self.format_attrs(),
-            c=u''.join(
-                [child.render_html(0, '') for child in self.children]))
-
-
 class Ul(Element):
     def __init__(self, *args, **kwargs):
         super(Ul, self).__init__(*args, **kwargs)
@@ -150,3 +136,26 @@ class A(OneLineTag):
     def __init__(self, url, content='', **kwargs):
         super(A, self).__init__(content, href=url, **kwargs)
         self.tag = 'a'
+
+
+#########################
+# Non-closing tags
+
+class Hr(Element):
+    def __init__(self, *args, **kwargs):
+        super(Hr, self).__init__(*args, **kwargs)
+        self.tag = 'hr'
+
+    def render_html(self, indent=0):
+        return u'\n{i}<{t}{a} />'.format(
+            i=u' ' * indent,  # possible to use int in string format better?
+            t=self.tag,
+            a=self.format_attrs(),
+            c=u''.join(
+                [child.render_html(0, '') for child in self.children]))
+
+
+class Meta(Hr):
+    def __init__(self, *args, **kwargs):
+        super(Meta, self).__init__(*args, **kwargs)
+        self.tag = 'meta'
