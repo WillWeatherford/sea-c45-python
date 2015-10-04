@@ -14,6 +14,7 @@ Python class example.
 TAB_SIZE = 4
 NEWLINE = '\n'
 
+
 class Content(object):
     def __init__(self, text):
         self.text = text
@@ -85,9 +86,9 @@ class Element(object):
             elif isinstance(child, str) or isinstance(child, unicode):
                 self.children.append(Content(child))
             else:
-                raise TypeError, ('Object appended to Element must be a string'
-                                  'or another Element; got {} instead'
-                                  ).format(type(child))
+                raise TypeError('Object appended to Element must be a string'
+                                'or another Element; got {} instead'
+                                ).format(type(child))
 
 
 class Html(Element):
