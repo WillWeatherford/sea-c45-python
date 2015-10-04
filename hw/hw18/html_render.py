@@ -18,10 +18,9 @@ class Element(object):
     def __init__(self, content=None, **attrs):
         self.tag = ''
         self.extra_tag = ''
-        # self.indent = indent
+        self.content_newline = '\n'
         self.content = []
         self.children = []
-        self.parent = None
         self.append(content)
 
     def __str__(self):
@@ -40,9 +39,9 @@ class Element(object):
             ch=u''.join([child.render_html(
                 child_indent) for child in self.children]))
 
-    def format_content(self, indent):
-        return u''.join(['\n{}{}'.format(
-            u' ' * indent, c) for c in self.content if c])
+    def format_content(self, indent, newline='\n'):
+        return u''.join(['{}{}{}'.format(
+            newline, u' ' * indent, c) for c in self.content if c])
 
     def append(self, child=None):
         if child:
@@ -70,7 +69,31 @@ class Body(Element):
         self.tag = 'body'
 
 
+class Head(Element):
+    def __init__(self, *args, **kwargs):
+        super(Head, self).__init__(*args, **kwargs)
+        self.tag = 'head'
+
+
 class P(Element):
     def __init__(self, *args, **kwargs):
         super(P, self).__init__(*args, **kwargs)
         self.tag = 'p'
+
+
+class OneLineTag(Element):
+    def __init__(self, *args, **kwargs):
+        super(OneLineTag, self).__init__(*args, **kwargs)
+        self.content_newline = ''
+
+    def render_html(self, indent=0):
+        return u'\n{i}<{t}>{c}</{t}>'.format(
+            i=u' ' * indent,  # possible to use int in string format better?
+            t=self.tag,
+            c=self.format_content(0, ''))
+
+
+class Title(OneLineTag):
+    def __init__(self, *args, **kwargs):
+        super(Title, self).__init__(*args, **kwargs)
+        self.tag = 'title'
