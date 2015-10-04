@@ -22,6 +22,7 @@ class Element(object):
         self.content = []
         self.children = []
         self.append(content)
+        self.attrs = attrs
 
     def __str__(self):
         return self.render()
@@ -31,13 +32,17 @@ class Element(object):
 
     def render_html(self, indent=0):
         child_indent = indent + TAB_SIZE
-        return u'{x}\n{i}<{t}>{c}{ch}\n{i}</{t}>'.format(
+        return u'{x}\n{i}<{t}{a}>{c}{ch}\n{i}</{t}>'.format(
             x=self.extra_tag,
             i=u' ' * indent,  # possible to use int in string format better?
+            a=self.format_attrs(),
             t=self.tag,
             c=self.format_content(child_indent),
             ch=u''.join([child.render_html(
                 child_indent) for child in self.children]))
+
+    def format_attrs(self):
+        return ''.join([' {}="{}"'.format(k, v) for k, v in self.attrs.items()])
 
     def format_content(self, indent, newline='\n'):
         return u''.join(['{}{}{}'.format(
