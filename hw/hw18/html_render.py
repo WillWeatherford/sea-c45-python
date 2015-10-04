@@ -14,12 +14,19 @@ Python class example.
 TAB_SIZE = 4
 
 
+class Content(object):
+    def __init__(self, text):
+        self.text = text
+
+    def render_html(self, indent, newline='\n'):
+        return '{}{}{}'.format(newline, ' ' * indent, self.text)
+
+
 class Element(object):
     def __init__(self, content=None, **attrs):
         self.tag = ''
         self.extra_tag = ''
         self.content_newline = '\n'
-        self.content = []
         self.children = []
         self.append(content)
         self.attrs = attrs
@@ -30,23 +37,19 @@ class Element(object):
     def render(self, f):
         f.write(self.render_html())
 
-    def render_html(self, indent=0):
+    def render_html(self, indent=0, newline='\n'):
         child_indent = indent + TAB_SIZE
-        return u'{x}\n{i}<{t}{a}>{c}{ch}\n{i}</{t}>'.format(
+        return u'{x}{n}{i}<{t}{a}>{c}{n}{i}</{t}>'.format(
             x=self.extra_tag,
+            n=newline,
             i=u' ' * indent,  # possible to use int in string format better?
             a=self.format_attrs(),
             t=self.tag,
-            c=self.format_content(child_indent),
-            ch=u''.join([child.render_html(
+            c=u''.join([child.render_html(
                 child_indent) for child in self.children]))
 
     def format_attrs(self):
         return ''.join([' {}="{}"'.format(k, v) for k, v in self.attrs.items()])
-
-    def format_content(self, indent, newline='\n'):
-        return u''.join(['{}{}{}'.format(
-            newline, u' ' * indent, c) for c in self.content if c])
 
     def append(self, child=None):
         if child:
@@ -54,7 +57,7 @@ class Element(object):
                 self.children.append(child)
                 child.parent = self
             elif isinstance(child, str) or isinstance(child, unicode):
-                self.content.append(child)
+                self.children.append(Content(child))
             else:
                 raise TypeError, ('Object appended to Element must be a string'
                                   'or another Element; got {} instead'
@@ -89,20 +92,28 @@ class P(Element):
 class OneLineTag(Element):
     def __init__(self, *args, **kwargs):
         super(OneLineTag, self).__init__(*args, **kwargs)
-        self.content_newline = ''
+        self.child_newline = ''
 
-    def render_html(self, indent=0):
-        return u'\n{i}<{t}{a}>{c}</{t}>'.format(
+    def render_html(self, indent=0, newline=u'\n'):
+        return u'{n}{i}<{t}{a}>{c}</{t}>'.format(
+            n=newline,
             i=u' ' * indent,  # possible to use int in string format better?
             t=self.tag,
             a=self.format_attrs(),
-            c=self.format_content(0, ''))
+            c=u''.join(
+                [child.render_html(0, u'') for child in self.children]))
 
 
 class Title(OneLineTag):
     def __init__(self, *args, **kwargs):
         super(Title, self).__init__(*args, **kwargs)
         self.tag = 'title'
+
+
+class A(OneLineTag):
+    def __init__(self, url, content=u''):
+        super(A, self).__init__(content, href=url)
+        self.tag = 'a'
 
 
 class Hr(Element):
@@ -115,4 +126,5 @@ class Hr(Element):
             i=u' ' * indent,  # possible to use int in string format better?
             t=self.tag,
             a=self.format_attrs(),
-            c=self.format_content(0, ''))
+            c=u''.join(
+                [child.render_html(0, u'') for child in self.children]))
