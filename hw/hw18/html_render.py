@@ -92,9 +92,10 @@ class OneLineTag(Element):
         self.content_newline = ''
 
     def render_html(self, indent=0):
-        return u'\n{i}<{t}>{c}</{t}>'.format(
+        return u'\n{i}<{t}{a}>{c}</{t}>'.format(
             i=u' ' * indent,  # possible to use int in string format better?
             t=self.tag,
+            a=self.format_attrs(),
             c=self.format_content(0, ''))
 
 
@@ -102,3 +103,16 @@ class Title(OneLineTag):
     def __init__(self, *args, **kwargs):
         super(Title, self).__init__(*args, **kwargs)
         self.tag = 'title'
+
+
+class Hr(Element):
+    def __init__(self, *args, **kwargs):
+        super(Hr, self).__init__(*args, **kwargs)
+        self.tag = 'hr'
+
+    def render_html(self, indent=0):
+        return u'\n{i}<{t}{a} />'.format(
+            i=u' ' * indent,  # possible to use int in string format better?
+            t=self.tag,
+            a=self.format_attrs(),
+            c=self.format_content(0, ''))
