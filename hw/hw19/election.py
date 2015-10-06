@@ -26,6 +26,8 @@ def row_to_edge(row):
     Given an *ElectionDataRow* or *PollDataRow*, returns the
     Democratic *Edge* in that *State*.
     """
+    # print 'in r_t_e: row:'
+    # print row
     return float(row["Dem"]) - float(row["Rep"])
 
 
@@ -76,6 +78,13 @@ def unique_column_values(rows, column_name):
     Given a list of rows and the name of a column (a string),
     returns a set containing all values in that column.
     """
+    # print 'in u_c_v:'
+    # print 'rows:'
+    # print rows
+    # print 'column_name:'
+    # print column_name
+    # print 'returning:'
+    # print  {row[column_name] for row in rows}
     return {row[column_name] for row in rows}
 
 
@@ -84,18 +93,14 @@ def pollster_predictions(poll_rows):
     Given a list of *PollDataRow*s, returns *PollsterPredictions*.
     For a given pollster, uses only the most recent poll for a state.
     """
-    # TODO: Implement this function
-    # most recent
-    # state edges
-    # state edges for most recent per state per pollster
-    for r in poll_rows:
-        for k, v in r.items():
-            print k, v
-    predictions = {p: {
-        unique_column_values(poll_rows, 'State'): 
-    } for p in unique_column_values(poll_rows, 'Pollster')}
-
-
+    return {
+        p: {state: edge for state, edge in state_edges(
+            [most_recent_poll_row(poll_rows, p, s)
+                for s in unique_column_values(poll_rows, 'State')
+                if most_recent_poll_row(poll_rows, p, s)]
+        ).items()}
+        for p in unique_column_values(poll_rows, 'Pollster')
+    }
 
 
 ################################################################################
@@ -107,15 +112,16 @@ def average_error(state_edges_predicted, state_edges_actual):
     Given predicted *StateEdges* and actual *StateEdges*, returns
     the average error of the prediction.
     """
-    #TODO: Implement this function
+    # TODO: Implement this function
     pass
+
 
 def pollster_errors(pollster_predictions, state_edges_actual):
     """
     Given *PollsterPredictions* and actual *StateEdges*,
     retuns *PollsterErrors*.
     """
-    #TODO: Implement this function
+    # TODO: Implement this function
     pass
 
 
