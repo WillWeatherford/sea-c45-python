@@ -1,4 +1,4 @@
-# Name: ...
+# Name: Will Weatherford
 # CodeFellows Python F2: SEA-C45
 # Homework 19: Election prediction
 
@@ -34,11 +34,12 @@ def state_edges(election_result_rows):
     The input list has no duplicate *States*;
     that is, each *State* is represented at most once in the input list.
     """
-    pass
+    return {row['State']: row_to_edge(row) for row in election_result_rows}
 
 ################################################################################
 # Problem 2: Find the most recent poll row
 ################################################################################
+
 
 def earlier_date(date1, date2):
     """
@@ -47,13 +48,23 @@ def earlier_date(date1, date2):
     """
     return (time.strptime(date1, "%b %d %Y") < time.strptime(date2, "%b %d %Y"))
 
+
 def most_recent_poll_row(poll_rows, pollster, state):
     """
     Given a list of *PollDataRow*s, returns the most recent row with the
     specified *Pollster* and *State*. If no such row exists, returns None.
     """
-    #TODO: Implement this function
-    pass
+    rows = [row for row in poll_rows if row['Pollster'] == pollster \
+            and row['State'] == state]
+            
+    if rows:
+        most_recent = rows[0]
+        for r in rows[1:]:
+            if earlier_date(most_recent['Date'], r['Date']):
+                most_recent = dict(r)
+        return most_recent
+    else:
+        return None
 
 
 ################################################################################
@@ -67,6 +78,7 @@ def unique_column_values(rows, column_name):
     """
     #TODO: Implement this function
     pass
+
 
 def pollster_predictions(poll_rows):
     """
