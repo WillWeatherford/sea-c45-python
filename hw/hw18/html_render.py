@@ -41,39 +41,17 @@ class Element(object):
     def render(self, f):
         f.write(self.render_html())
 
-    # def render_html(self, indent=0, newline='\n'):
-    #     child_indent = indent + TAB_SIZE
-    #     return u'{x}{n}{i}<{t}{a}>{c}{n}{i}</{t}>'.format(
-    #         x=self.extra_tag,
-    #         n=newline,
-    #         i=u' ' * indent,  # possible to use int in string format better?
-    #         a=self.format_attrs(),
-    #         t=self.tag,
-    #         c=u''.join([child.render_html(
-    #             child_indent) for child in self.children]))
-
     def render_html(self, indent=0, newline=NEWLINE):
         return u'{d}{b_o}{o_t}{c}{b_c}{c_t}'.format(
             d=self.doctype,
-            b_o=self.before_open_tag(indent, newline),
+            b_o='{}{}'.format(newline, ' ' * indent),
             o_t=self.open_tag.format(t=self.tag, a=self.format_attrs()),
             c=''.join([c.render_html(
-                self.child_indent(indent),
-                self.child_newline()) for c in self.children]),
-            b_c=self.before_close_tag(indent, newline),
+                (indent + TAB_SIZE) * self.multi_line,
+                NEWLINE * self.multi_line
+                ) for c in self.children]),
+            b_c='{}{}'.format(newline, ' ' * indent) * self.multi_line,
             c_t=self.close_tag.format(t=self.tag))
-
-    def before_open_tag(self, indent, newline):
-        return '{}{}'.format(newline, ' ' * indent)
-
-    def before_close_tag(self, indent, newline):
-        return '{}{}'.format(newline, ' ' * indent) * self.multi_line
-
-    def child_indent(self, indent):
-        return (indent + TAB_SIZE) * self.multi_line
-
-    def child_newline(self):
-        return NEWLINE * self.multi_line
 
     def format_attrs(self):
         return ''.join([' {}="{}"'.format(k, v) for k, v in self.attrs.items()])
