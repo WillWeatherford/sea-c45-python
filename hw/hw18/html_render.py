@@ -137,21 +137,27 @@ class A(OneLineTag):
 #########################
 # Non-closing tags
 
-class EmptyTag(Element):
+class SelfClosingTag(Element):
     def __init__(self, *args, **kwargs):
-        super(EmptyTag, self).__init__(*args, **kwargs)
+        super(SelfClosingTag, self).__init__(*args, **kwargs)
         self.open_tag = '<{t}{a} />'
         self.close_tag = ''
         self.multi_line = False
 
 
-class Hr(EmptyTag):
+class Hr(SelfClosingTag):
     def __init__(self, *args, **kwargs):
         super(Hr, self).__init__(*args, **kwargs)
         self.tag = 'hr'
 
 
-class Meta(EmptyTag):
+class Br(SelfClosingTag):
+    def __init__(self, *args, **kwargs):
+        super(Br, self).__init__(*args, **kwargs)
+        self.tag = 'br'
+
+
+class Meta(SelfClosingTag):
     def __init__(self, *args, **kwargs):
         super(Meta, self).__init__(*args, **kwargs)
         self.tag = 'meta'
