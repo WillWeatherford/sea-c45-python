@@ -2,17 +2,19 @@ import sys
 import time
 import random
 
+# Hannah$ cd Documents/CodeFellows/sea-c45-python/hw/hw13
 
-def main(filename, new_story_length):
+
+def main(filename, new_story_length=100):
 
     words = words_from_file(filename)
 
     trigrams = trigrams_from_words(words)
 
-    output = story_from_trigrams(trigrams, new_story_length, [])
+    output = story_from_trigrams(trigrams, new_story_length)
 
     print '-------------------------------------'
-    print output
+    return output
 
 
 def words_from_file(filename):
@@ -36,15 +38,14 @@ def trigrams_from_words(words):
     return trigrams
 
 
-def story_from_trigrams(trigrams, num=100, new_words=[]):
-    time.sleep(0.2)
+def story_from_trigrams(trigrams, num, new_words=[]):
+    if len(new_words) >= int(num) or num < 3:
+        return ' '.join(new_words)
+
     if not new_words:
-        print 'NOT new_words'
         starting_two = random.choice(trigrams.keys())
         new_words.extend(starting_two.split(' '))
-    if len(new_words) >= num:
-        print 'New words equal or greater to given num'
-        return ' '.join(new_words)
+
     if len(new_words) > 1:
         onetwo = '{} {}'.format(new_words[-2], new_words[-1])
         if onetwo not in trigrams.keys():
@@ -63,6 +64,7 @@ if __name__ == '__main__':
             print('No new story length given; defaulting to new story length'
                   ' of 100 words')
             new_story_length = 100
-        main(filename, new_story_length)
+        output = main(filename, new_story_length)
+        print output
     except IndexError:
         print 'No filename given.'
