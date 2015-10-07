@@ -18,7 +18,8 @@ class Circle(object):
         # for f in ['__add__', '__eq__', '__ge__', '__gt__',
         #           '__le__', '__lt__', '__ne__']:
         #     setattr(self, f,
-        #             lambda self, other: getattr(self.radius, f)(other.radius))
+        #             lambda self, other:
+        #                 getattr(self.radius, f)(other.radius))
 
     def __str__(self):
         return 'Circle with radius: {:.6f}'.format(self.radius)
@@ -56,23 +57,24 @@ class Circle(object):
     def __ge__(self, other):
         return self.radius >= other.radius
 
-    def _get_d(self):
+    @property
+    def diameter(self):
         return self._diameter
 
-    def _set_d(self, value):
+    @diameter.setter
+    def diameter(self, value):
         self.radius = value / 2
         self._diameter = value
         self._area = math.pi * (value / 2) ** 2
 
-    def _del_d(self):
+    @diameter.deleter
+    def diameter(self):
         del self._diameter
 
-    def _get_a(self):
+    @property
+    def area(self):
         return self._area
 
-    def _del_a(self):
+    @area.deleter
+    def area(self):
         del self._area
-
-    diameter = property(_get_d, _set_d, _del_d, doc='Diameter docstring')
-
-    area = property(_get_a, None, _del_a, doc='Area docstring')
