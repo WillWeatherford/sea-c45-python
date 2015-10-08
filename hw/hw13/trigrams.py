@@ -35,7 +35,10 @@ def trigrams_from_words(words):
     return trigrams
 
 
-def story_from_trigrams(trigrams, num, new_words=[]):
+def story_from_trigrams(trigrams, num, new_words=None):
+    if new_words is None:
+        new_words = []
+
     if len(new_words) >= int(num) or num < 3:
         return ' '.join(new_words)
 
