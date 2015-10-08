@@ -30,11 +30,8 @@ def trigrams_from_words(words):
             one = w.strip()
             two = words[i + 1].strip()
             three = words[i + 2].strip()
-
             onetwo = '{} {}'.format(one, two)
-            if onetwo not in trigrams.keys():
-                trigrams[onetwo] = []
-            trigrams[onetwo].append(three)
+            trigrams.setdefault(onetwo, []).append(three)
     return trigrams
 
 
