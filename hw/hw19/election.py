@@ -3,8 +3,9 @@
 # Homework 19: Election prediction
 
 import csv
-import os
+# import os
 import time
+
 
 def read_csv(path):
     """
@@ -55,7 +56,7 @@ def most_recent_poll_row(poll_rows, pollster, state):
     Given a list of *PollDataRow*s, returns the most recent row with the
     specified *Pollster* and *State*. If no such row exists, returns None.
     """
-    rows = [row for row in poll_rows if row['Pollster'] == pollster \
+    rows = [row for row in poll_rows if row['Pollster'] == pollster
             and row['State'] == state]
     if rows:
         most_recent = rows[0]
@@ -103,8 +104,11 @@ def average_error(state_edges_predicted, state_edges_actual):
     Given predicted *StateEdges* and actual *StateEdges*, returns
     the average error of the prediction.
     """
-    # TODO: Implement this function
-    pass
+    abs_list = [
+        abs(state_edges_predicted[state] - state_edges_actual[state])
+        for state in [s for s in state_edges_predicted.keys()
+                      if s in state_edges_actual.keys()]]
+    return sum(abs_list) / len(abs_list)
 
 
 def pollster_errors(pollster_predictions, state_edges_actual):
@@ -112,8 +116,9 @@ def pollster_errors(pollster_predictions, state_edges_actual):
     Given *PollsterPredictions* and actual *StateEdges*,
     retuns *PollsterErrors*.
     """
-    # TODO: Implement this function
-    pass
+    return {pollster: average_error(
+        pollster_predictions[pollster], state_edges_actual)
+        for pollster in pollster_predictions.keys()}
 
 
 ################################################################################
