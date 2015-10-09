@@ -129,8 +129,10 @@ def pivot_nested_dict(nested_dict):
     """
     Pivots a nested dictionary, producing a different nested dictionary
     containing the same values.
+
     The input is a dictionary d1 that maps from keys k1 to dictionaries d2,
     where d2 maps from keys k2 to values v.
+
     The output is a dictionary d3 that maps from keys k2 to dictionaries d4,
     where d4 maps from keys k1 to values v.
     For example:
@@ -140,8 +142,13 @@ def pivot_nested_dict(nested_dict):
                 'x': {'a': 1, 'b': 3},
                 'z': {'b': 4} }
     """
-     #TODO: Implement this function
-    pass
+    d3 = {}
+    for k1, d in nested_dict.items():
+        for k2, v in d.items():
+            if k2 not in d3.keys():
+                d3[k2] = {}
+            d3[k2][k1] = v
+    return d3
 
 
 ################################################################################
