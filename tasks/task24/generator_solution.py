@@ -15,11 +15,22 @@ def intsum():
         y += n
 
 
-def intsum2():
-    pass
+def intsum2(y=0):
+    '''
+    Copy of intsum... need to try a recursive way of doing this
+    '''
+    n = 0
+    y = 0
+    while True:
+        yield y
+        n += 1
+        y += n
 
 
 def doubler():
+    '''
+    yields a sequence where each number is double the previous number
+    '''
     y = 1
     while True:
         yield y
@@ -27,6 +38,10 @@ def doubler():
 
 
 def fib(y=1):
+    '''
+    yields a sequence where each number is the sum of the previous two
+    numbers
+    '''
     while True:
         if y <= 1:
             yield y
@@ -36,7 +51,9 @@ def fib(y=1):
 
 
 def prime():
-    print 'running prime'
+    '''
+    yields a sequence where every number is divisble only by itself and 1
+    '''
     y = 2
     while True:
         for n in range(2, y):
@@ -45,3 +62,13 @@ def prime():
         else:
             yield y
         y += 1
+
+if __name__ == '__main__':
+    g = intsum2()
+    g.next()
+    g.next()
+    g.next()
+    g.next()
+    g.next()
+    g.next()
+    g.next()
