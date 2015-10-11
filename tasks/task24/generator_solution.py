@@ -14,7 +14,17 @@ def intsum():
         n += 1
         y += n
 
-# intsum2
-# doubler
+
+def intsum2():
+    pass
+
+
+def doubler():
+    y = 1
+    while True:
+        yield y
+        y *= 2
+
+
 # fib
 # prime
