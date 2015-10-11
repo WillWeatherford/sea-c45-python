@@ -180,6 +180,7 @@ def test_average_edge():
     assert(average_edge({"p1":2, "p2":4, "p3":4, "p4":6}, {"p1":1, "p2":1, "p3":1, "p4":5}) == 3.3684210526315788)
     assert(average_edge({"p1":1, "p2":2, "p3":3, "p4":4, "p5":5},
                         {"p1":1, "p2":2, "p3":3, "p4":4, "p5":5}) == 1.560068324160182)
+    print(average_edge({"p1":3, "p2":4, "p3":5}, {"p1":5, "p2":5}))
     assert(average_edge({"p1":3, "p2":4, "p3":5}, {"p1":5, "p2":5}) == 4)
     assert(average_edge({"p1":3, "p2":4, "p3":5}, {}) == 4)
 
@@ -230,7 +231,7 @@ if __name__ == "__main__":
     test_average_error_to_weight()
     test_pollster_to_weight()
     test_weighted_average()
-    # test_average_edge()
+    test_average_edge()
     # test_predict_state_edges()
     test_electoral_college_outcome()
 
