@@ -34,4 +34,14 @@ def fib(y=1):
             yield fib(y - 1).next() + fib(y - 2).next()
         y += 1
 
-# prime
+
+def prime():
+    print 'running prime'
+    y = 2
+    while True:
+        for n in range(2, y):
+            if y % n == 0:
+                break
+        else:
+            yield y
+        y += 1
