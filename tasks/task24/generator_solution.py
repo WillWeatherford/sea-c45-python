@@ -26,5 +26,12 @@ def doubler():
         y *= 2
 
 
-# fib
+def fib(y=1):
+    while True:
+        if y <= 1:
+            yield y
+        else:
+            yield fib(y - 1).next() + fib(y - 2).next()
+        y += 1
+
 # prime
