@@ -191,8 +191,7 @@ def weighted_average(items, weights):
     """
     assert len(items) > 0
     assert len(items) == len(weights)
-    return sum([item * weights[i] for i, item in enumerate(items)]
-               ) / float(sum(weights))
+    return sum([item * weights[i] for i, item in enumerate(items)]) / float(sum(weights))
 
 
 def average_edge(pollster_edges, pollster_errors):
@@ -218,18 +217,20 @@ def predict_state_edges(pollster_predictions, pollster_errors):
     # TODO: Implement this function
     # use pivot_nested_dict to pivot from edge by pollster to edge by state
     # use average_edge
-    # print(pollster_predictions)
-    # print(pollster_errors)
+    print(pollster_predictions)
+    print(pollster_errors)
 
-    # state_predictions = pivot_nested_dict(pollster_predictions)
-    # for state, pollster_pred in state_predictions.items():
-    #     state_edge = (average_edge(pollster_pred, pollster_errors))
-    #     print(state_edge)
-    # print(state_predictions)
+    state_predictions = pivot_nested_dict(pollster_predictions)
+    for state, pollster_pred in state_predictions.items():
+        state_edge = (average_edge(pollster_pred, pollster_errors))
+        print(state, state_edge)
+    print(state_predictions)
     pass
 
-
-    return {"state1": 'edge1'}
+    return {
+        state: average_edge(predictions, pollster_errors)
+        for state, predictions in pivot_nested_dict(pollster_predictions).items()
+    }
 
 
 ################################################################################
