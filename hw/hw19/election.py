@@ -142,13 +142,12 @@ def pivot_nested_dict(nested_dict):
                 'x': {'a': 1, 'b': 3},
                 'z': {'b': 4} }
     """
-    d3 = {}
-    for k1, d in nested_dict.items():
-        for k2, v in d.items():
-            if k2 not in d3.keys():
-                d3[k2] = {}
-            d3[k2][k1] = v
-    return d3
+    return {
+        k: {
+            k2: nested_dict[k2][k]
+            for k2 in nested_dict.keys() if nested_dict[k2].get(k)
+        } for k in {k3 for d in nested_dict.values() for k3 in d.keys()}
+    }
 
 
 ################################################################################
@@ -165,6 +164,7 @@ def average_error_to_weight(error):
 # The default average error of a pollster who did no polling in the
 # previous election.
 DEFAULT_AVERAGE_ERROR = 5.0
+
 
 def pollster_to_weight(pollster, pollster_errors):
     """"
@@ -191,8 +191,7 @@ def weighted_average(items, weights):
     """
     assert len(items) > 0
     assert len(items) == len(weights)
-    #TODO: Implement this function
-    pass
+    return sum([item * weights[i] for i, item in enumerate(items)]) / sum(weights)
 
 
 def average_edge(pollster_edges, pollster_errors):

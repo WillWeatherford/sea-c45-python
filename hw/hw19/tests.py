@@ -141,7 +141,6 @@ def test_pivot_nested_dict():
         'start': {'Revolutionary': 1775, 'Civil': 1861, 'Mexican': 1846},
         'end': {'Revolutionary': 1783, 'Civil': 1865, 'Mexican': 1848}
         }
-    print pivot_nested_dict(us_wars_by_name)
     assert(pivot_nested_dict(us_wars_by_name) == us_wars_by_start_and_end)
 
     pnd_input = { "a" : { "x": 1, "y": 2 },
@@ -149,7 +148,6 @@ def test_pivot_nested_dict():
     pnd_output = {'y': {'a': 2},
                   'x': {'a': 1, 'b': 3},
                   'z': {'b': 4} }
-    print pivot_nested_dict(pnd_input)
     assert(pivot_nested_dict(pnd_input) == pnd_output)
 
 
@@ -231,7 +229,7 @@ if __name__ == "__main__":
     test_pivot_nested_dict()
     test_average_error_to_weight()
     test_pollster_to_weight()
-    # test_weighted_average()
+    test_weighted_average()
     # test_average_edge()
     # test_predict_state_edges()
     test_electoral_college_outcome()
