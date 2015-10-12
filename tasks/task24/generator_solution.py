@@ -5,7 +5,7 @@ Generator solutions
 
 def intsum():
     '''
-    yields a sequence where each number is the sum of n + 1
+    yields a sequence of sums of the count in the sequence
     '''
     n = 0
     y = 0
@@ -17,14 +17,12 @@ def intsum():
 
 def intsum2(y=0):
     '''
-    Copy of intsum... need to try a recursive way of doing this
+    alternative way to calculate intsum using sum(range(n + 1))
     '''
     n = 0
-    y = 0
     while True:
-        yield y
+        yield sum(range(n + 1))
         n += 1
-        y += n
 
 
 def doubler():
